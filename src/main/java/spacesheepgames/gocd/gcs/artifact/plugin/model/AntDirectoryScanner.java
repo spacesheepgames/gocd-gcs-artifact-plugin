@@ -7,6 +7,24 @@ import java.util.List;
 
 public class AntDirectoryScanner {
 
+    public static List<File> addDirectoryFiles(File baseDir, String directory) {
+        List<File> allFiles = new ArrayList<>();
+        File[] files = new File(baseDir, directory).listFiles();
+        if(files != null) {
+            for(File f : files) {
+                if (f.isDirectory()){
+                    for (File file : addDirectoryFiles(baseDir, directory + "/" + f.getName()))
+                    {
+                        allFiles.add(file);
+                    }
+                } else {
+                    allFiles.add(new File(directory, f.getName()));
+                }
+            }
+        }     
+        return allFiles;
+    }
+
     public List<File> getFilesMatchingPattern(File baseDir, String pattern) {
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(baseDir);
@@ -17,12 +35,7 @@ public class AntDirectoryScanner {
         List<File> allFiles = new ArrayList<>();
         String[] directories = scanner.getIncludedDirectories();
         for (String directory : directories) {
-            File[] files = new File(baseDir, directory).listFiles();
-            if(files != null) {
-                for(File f : files) {
-                    allFiles.add(new File(directory, f.getName()));
-                }
-            }
+            allFiles.addAll(addDirectoryFiles(baseDir, directory));
         }
 
         for (int i = 0; i < allPaths.length; i++) {
