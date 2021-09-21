@@ -16,15 +16,20 @@
 
 package spacesheepgames.gocd.gcs.artifact.plugin.executors;
 
+import spacesheepgames.gocd.gcs.artifact.plugin.annotation.ConfigMetadata;
+import spacesheepgames.gocd.gcs.artifact.plugin.annotation.MetadataHelper;
+import spacesheepgames.gocd.gcs.artifact.plugin.model.FetchArtifactConfig;
 import spacesheepgames.gocd.gcs.artifact.plugin.utils.Util;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GetFetchArtifactMetadataExecutor implements RequestExecutor {
+
     public GoPluginApiResponse execute() {
-        return DefaultGoPluginApiResponse.success(Util.GSON.toJson(new ArrayList<>()));
+        final List<ConfigMetadata> metadata = MetadataHelper.getMetadata(FetchArtifactConfig.class);
+        return DefaultGoPluginApiResponse.success(Util.GSON.toJson(metadata));
     }
 }
 

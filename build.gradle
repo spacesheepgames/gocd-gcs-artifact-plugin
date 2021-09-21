@@ -19,7 +19,7 @@ apply from: "https://raw.githubusercontent.com/spacesheepgames/gocd-plugin-gradl
 
 gocdPlugin {
     id = 'games.spacesheep.artifact.gcs'
-    pluginVersion = "0.1.0"
+    pluginVersion = "1.0.0"
     goCdVersion = '18.7.0'
     name = 'Artifact plugin for GCS'
     description = 'Plugin allows to store and fetch artifacts using Google Cloud Storage'

@@ -20,7 +20,9 @@ public class AntDirectoryScanner {
             File[] files = new File(baseDir, directory).listFiles();
             if(files != null) {
                 for(File f : files) {
-                    allFiles.add(new File(directory, f.getName()));
+                    if (!f.isDirectory()){
+                        allFiles.add(new File(directory, f.getName()));
+                    }
                 }
             }
         }

@@ -29,6 +29,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -120,7 +121,9 @@ public class FetchArtifactExecutor implements RequestExecutor {
                         targetFile = blob.getName().replaceFirst(prefix, "");
                         Path outFile = getTargetPath(fetchConfig, workingDir, targetFile);
                         gcsInBucketName = blob.getName();
-                        LOG.info(String.format("Retrieving file `%s` from GCS bucket `%s`.", gcsInBucketName, bucketName));
+                        consoleLogger.info(String.format("Retrieving file `%s` from GCS bucket `%s`.", gcsInBucketName, bucketName));
+                        consoleLogger.info(String.format("Storing file `%s` on path `%s", outFile.toString(), outFile.getParent().toString()));
+                        Files.createDirectories(outFile.getParent());
                         blob.downloadTo(outFile);
                         count++;
                     }
@@ -137,13 +140,15 @@ public class FetchArtifactExecutor implements RequestExecutor {
                     }
                 }
             }
-            Path outFilePath = getTargetPath(fetchConfig, workingDir, targetFile);
+            Path outFile = getTargetPath(fetchConfig, workingDir, targetFile);
             String logMessage = String.format("Retrieving file `%s` from GCS bucket `%s`...", gcsInBucketName, bucketName);
             consoleLogger.info(logMessage);
             LOG.info(logMessage);
             Blob blob = storage.get(BlobId.of(bucketName, gcsInBucketName));
-            blob.downloadTo(outFilePath);
-            consoleLogger.info(String.format("Source `%s` successfully pulled from GCS bucket `%s` to `%s`.", gcsInBucketName, bucketName, outFilePath));
+            consoleLogger.info(String.format("Storing file `%s` on path `%s", outFile.toString(), outFile.getParent().toString()));
+            Files.createDirectories(outFile.getParent());
+            blob.downloadTo(outFile);
+            consoleLogger.info(String.format("Source `%s` successfully pulled from GCS bucket `%s` to `%s`.", gcsInBucketName, bucketName, outFile));
             return DefaultGoPluginApiResponse.success("");
         } catch (Exception e) {
             final String message = format("Failed pull source file: %s", e);
