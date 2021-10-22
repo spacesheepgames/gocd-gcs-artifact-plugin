@@ -6,6 +6,6 @@
 
 <div class="form_item_block">
     <label ng-class="{'is-invalid-label': GOINPUTNAME[Destination].$error.server}">Destination:</label>
-    <input ng-class="{'is-invalid-input': GOINPUTNAME[Destination].$error.server}" type="text" ng-model="Destination" ng-required="false" placeholder="Destination folder"/>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[Destination].$error.server}" type="text" ng-init="Destination = Destination || '${GO_ARTIFACT_LOCATOR}'" ng-model="Destination" ng-required="false"/>
     <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[Destination].$error.server}" ng-show="GOINPUTNAME[Destination].$error.server">{{GOINPUTNAME[Destination].$error.server}}</span>
 </div>
