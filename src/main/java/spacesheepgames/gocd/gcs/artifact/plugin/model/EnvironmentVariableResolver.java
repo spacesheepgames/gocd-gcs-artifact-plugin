@@ -16,7 +16,7 @@ public class EnvironmentVariableResolver {
         this.property = property;
         this.propertyName = propertyName;
         Map<String,String> map = new HashMap<>();
-        map.put("GO_ARTIFACT_LOCATOR", "${GO_PIPELINE_NAME}/${GO_STAGE_NAME}/${GO_JOB_NAME}/${GO_PIPELINE_COUNTER}.${GO_STAGE_COUNTER}/");
+        map.put("GO_ARTIFACT_LOCATOR", "${GO_PIPELINE_NAME}/${GO_PIPELINE_COUNTER}/${GO_STAGE_NAME}/${GO_STAGE_COUNTER}/${GO_JOB_NAME}/");
         this.property = StrSubstitutor.replace(property, map);
     }
 
